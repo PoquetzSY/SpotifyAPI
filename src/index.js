@@ -8,6 +8,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 const indexRoutes = require('./routes/index');
 const authRoutes = require('./routes/auth');
+const config = require('../config');
 
 dotenv.config();
 
@@ -16,11 +17,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
-const MONGODB_URI = process.env.MONGODB_URI;
-// const SECRET_KEY = process.env.SECRET_KEY;
+const MONGO_URI = config.MONGO_URI;
+// const SECRET_KEY = config.SECRET_KEY;
 
 const store = new MongoDBStore({
-  uri: MONGODB_URI,
+  uri: MONGO_URI,
   collection: 'sessions'
 });
 
@@ -40,7 +41,7 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 // Database connection
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Connected to MongoDB');
     app.listen(PORT, () => {
