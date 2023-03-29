@@ -18,7 +18,6 @@ const PORT = process.env.PORT || 3000;
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const MONGODB_URI = process.env.MONGODB_URI;
-const SECRET_KEY = process.env.SECRET_KEY;
 
 const store = new MongoDBStore({
   uri: MONGODB_URI,
@@ -26,7 +25,6 @@ const store = new MongoDBStore({
 });
 
 app.use(session({
-  secret: SECRET_KEY,
   resave: false,
   saveUninitialized: false,
   store: store
