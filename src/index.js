@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 
+
 const indexRoutes = require('./routes/index');
 const authRoutes = require('./routes/auth');
 
@@ -90,3 +91,16 @@ app.use((err, req, res, next) => {
   console.log(err);
   res.status(500).send('Something went wrong');
 });
+
+const { getTopTracks } = require('./controllers/topController'); // Import the getTopTracks function
+
+app.get('/', async (req, res) => {
+  const topTracks = await getTopTracks();
+  const trackList = topTracks
+    .map(({ name, artists }) => `${name} by ${artists.map((artist) => artist.name).join(', ')}`)
+    .join('\n');
+
+  res.send(`Top Tracks:\n${trackList}`);
+});
+
+app.listen(3000, () => console.log('Server started on port 3000'));
